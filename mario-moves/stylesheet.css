@@ -1,0 +1,13 @@
+img {
+left: 100px;
+position: fixed;
+top: 600px;    
+}
+
+html {
+  background: url(http://art.ngfiles.com/images/21/tebone7_mario-background.jpg) no-repeat fixed; 
+  -webkit-background-size: 1000px;
+  -moz-background-size: 1000px;
+  -o-background-size: 1000px;
+  background-size: 100% 70%;
+}
