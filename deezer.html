@@ -9,6 +9,7 @@
 	<div id="dz-root"></div>
 	Singer <input type="text" id="artist">
 	<input type="button" onclick="search();" value="Search"/>
+	<input type="button" onclick="DZ.player.playAlbum(6125830);" value="Play a Britney Song" />
 	<ul id="results">
 	</ul>
 	
@@ -16,6 +17,9 @@
 		DZ.init({
 			appId  : '122865',
 			channelUrl : 'http://external.codecademy.com/channel.html',
+			player: {
+		        onload: function () {}
+            }
 		});
 
         function search(){
@@ -29,5 +33,6 @@
 			});
         }
 	</script>
+	
 </body>
 </html>
