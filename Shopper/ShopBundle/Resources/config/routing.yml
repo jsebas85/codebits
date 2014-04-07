@@ -1,0 +1,25 @@
+ShopperShopBundle_homepage:
+    pattern:  /shop
+    defaults: { _controller: ShopperShopBundle:Page:index }
+    requirements:
+        _method:  GET
+
+ShopperShopBundle_about:
+    pattern:  /about
+    defaults: { _controller: ShopperShopBundle:Page:about }
+    requirements:
+        _method:  GET
+
+
+ShopperShopBundle_contact:
+    pattern:  /contact
+    defaults: { _controller: ShopperShopBundle:Page:contact }
+    requirements:
+        _method:  GET|POST
+
+ShopperShopBundle_show:
+    pattern:  /{id}
+    defaults: { _controller: ShopperShopBundle:Product:show }
+    requirements:
+        _method:  GET
+        id: \d+
