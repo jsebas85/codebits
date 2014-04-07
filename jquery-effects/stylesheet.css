@@ -1,0 +1,78 @@
+#header {
+    position: absolute;
+    height: 60px;
+    width: 100%;
+    background-color: #008800;
+    color: #FFFFFF;
+    font-family: Verdana, Arial, Sans-Serif;
+    display:none;
+}
+
+img {
+    position: absolute;
+}
+
+#ball {
+    position: absolute;
+	height: 100px;
+    width: 100px;
+	top: 100px;
+	right: 100px;
+    border-radius: 100%;
+    background-color: #008800;
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#003500), to(#008800));
+    background-image: -webkit-linear-gradient(left, #003500, #008800); 
+    background-image:    -moz-linear-gradient(left, #003500, #008800);
+    background-image:     -ms-linear-gradient(left, #003500, #008800);
+    background-image:      -o-linear-gradient(left, #003500, #008800);
+}
+
+.red {
+    background-color: #CC0000;
+    background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#330000), to(#CC0000));
+    background-image: -webkit-linear-gradient(left, #330000, #CC0000); 
+    background-image:    -moz-linear-gradient(left, #330000, #CC0000);
+    background-image:     -ms-linear-gradient(left, #330000, #CC0000);
+    background-image:      -o-linear-gradient(left, #330000, #CC0000);
+}
+
+#menu  {
+	 position: absolute;
+	 top: 300px;
+}
+
+ol {
+    list-style-type: none;
+	position: relative;
+	left: -20px;
+	top: 400px;
+}
+
+ol li {
+	background: #eeeeee;
+	border-radius: 5px;
+	border: 1px solid black;
+	margin: 3px;
+	padding: 0.4em;
+	font-size: 1em;
+	height: 16px;
+	font-family: Verdana, Arial, Sans-Serif;
+}
+
+ol .ui-selected {
+	background: #F39814; color: white;
+}
+
+#button
+{
+    position: absolute;
+	top: 300px;
+	right: 50px;
+	border: 2px solid blue;
+    background-color: cyan;
+    width: 50px;
+    height: auto;
+    color: blue;
+    text-align: center;
+    box-shadow: 5px 5px 5px #888;
+}
