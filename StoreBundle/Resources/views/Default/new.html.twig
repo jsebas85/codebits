@@ -1,0 +1,10 @@
+<body> 
+<p>Username: {{ app.user.username }}</p>
+{{ form_start(form) }}
+{{ form_errors(form) }}
+{{ form_row(form.name) }}
+{{ form_row(form.price) }}
+{{ form_row(form.description) }}
+{{ form_row(form.category) }}
+{{ form_end(form) }}
+</body> 

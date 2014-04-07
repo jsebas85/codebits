@@ -1,0 +1,7 @@
+parameters:
+    my_logger.class: Acme\StoreBundle\Logger
+    my_logger.impl: StoreBundle
+services:
+    my_logger:
+        class: "%my_logger.class%"
+        arguments: ["%my_logger.impl%"]
