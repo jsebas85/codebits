@@ -29,7 +29,7 @@
         <ul class="phones">
           <li ng-repeat="phone in phones | filter:query | orderBy:orderProp">
             <span>{{phone.title}}</span>
-            <img src="{{phone.media.m}}">
+            <img ng-src=="{{phone.media.m}}">
           </li>
         </ul>
 
