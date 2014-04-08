@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en" ng-app="citiesApp">
+<head>
+  <meta charset="utf-8">
+  <title>Google Phone Gallery</title>
+  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" href="css/app.css">
+  <script src="../bower_components/angular/angular.js"></script>
+  <script src="js/controllers.js"></script>
+</head>
+<body ng-controller="CityListCtrl">
+
+  <div class="container-fluid">
+    <div class="row-fluid">
+      <div class="span2">
+        <!--Sidebar content-->
+
+        Search: <input ng-model="query">
+        Sort by:
+        <select ng-model="orderProp">
+          <option value="CustomerID">Cliente</option>
+          <option value="City">Ciudad</option>
+          <option value="CompanyName">Empresa</option>
+        </select>
+
+      </div>
+      <div class="span10">
+        <!--Body content-->
+
+        <ul class="phones">
+          <li ng-repeat="city in companies | filter:query | orderBy:orderProp">
+            <p>{{city.City}}</p>
+            <p>{{city.CompanyName}}</p>
+            <p>{{city.CustomerID}}</p>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
