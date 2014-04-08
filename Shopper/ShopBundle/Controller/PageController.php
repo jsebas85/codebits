@@ -47,4 +47,14 @@ class PageController extends Controller
 	        'form' => $form->createView()
 	    ));
     }
+
+    public function sidebarAction()
+	{
+	    $em = $this->getDoctrine()->getEntityManager();
+	    $tags = $em->getRepository('ShopperShopBundle:Product')->getTags();
+	    $tagWeights = $em->getRepository('ShopperShopBundle:Product')->getTagWeights($tags);
+	    return $this->render('ShopperShopBundle:Page:sidebar.html.twig', array(
+	        'tags' => $tagWeights
+	    ));
+	}
 }
