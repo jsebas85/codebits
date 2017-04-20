@@ -1,0 +1,45 @@
+<i class="fa fa-spin fa-refresh fa-3x" id="loader"></i>
+<div class="container" ng-app="randomUserApp" ng-controller="userController">
+  <hr>
+  <div class="container" id="userList">
+      <div class="row" ng-repeat-start="u in users" ng-click="showDetail(u.login)" ng-class-odd="'alt'">
+        <div class="col-xs-1 text-center"><img src="{{u.picture.large}}" class="img-thumbnail img-responsive img-circle"></div> 
+        <div class="col-xs-3 cap">{{u.name.first}}</div>
+        <div class="col-xs-3 strong">{{u.login.username}}</div>
+        <div class="col-xs-1 text-left">
+          <a href="">
+            <i ng-hide="active==u.login.username" class="fa fa-arrow-circle-down fa-2x"></i>
+            <i ng-show="active==u.login.username" class="fa fa-arrow-circle-up fa-2x"></i>
+          </a>
+        </div>
+      </div>
+      <div class="row" ng-repeat-end="" ng-show="active==u.login.username" ng-class-odd="'alt'">
+        <div class="col-xs-12">
+			<h2 class="cap">{{u.name.first}}
+				<i ng-show="u.gender=='female'" class="fa fa-female"></i>
+				<i ng-show="u.gender=='male'" class="fa fa-male"></i>
+			</h2>
+		</div>
+        <div class="col-md-3 col-xs-6 small">
+            <label>Username</label> {{u.login.username}}<br>
+            <label>Registered</label> {{u.registered | date:'yyyy-MM-dd'}}<br>
+            <label>Email</label> {{u.email}}
+        </div>
+		<div class="col-md-3 col-xs-6 small">
+			<label>Address</label> {{u.location.street}}<br>
+			<label>City</label> {{u.location.city}}<br>
+			<label>Zip Code</label> {{u.location.postcode}}<br>
+		</div>
+		<div class="col-md-3 col-xs-6 small">
+			<label>Birthday</label> {{u.dob | date:'yyyy-MM-dd'}}<br>
+            <label>Phone</label> {{u.phone}}<br>
+            <label>Cell</label> {{u.cell}}<br>
+        </div>
+        <div class="col-md-2 col-xs-12 text-center">
+			<img title="{{u.name.first}}" src="{{u.picture.large}}" class="img-thumbnail img-responsive center-block">
+        </div>
+        <div class="col-xs-12"><hr></div>  
+      </div>
+  </div>
+  <hr>
+</div>

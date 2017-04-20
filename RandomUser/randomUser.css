@@ -1,0 +1,41 @@
+body {
+  background-color: white;
+  color:#444;
+}
+
+.fa {
+  color:black;
+}
+
+.fa-male {
+  color:blue;
+}
+  
+.fa-female {
+  color:pink;
+}
+
+hr {
+  border-color: transparent;
+}
+
+
+#userList {
+  display:none;
+}
+
+#loader {
+  position:absolute;
+  z-index:2;
+  width:100%;
+  text-align:center;
+  top:40%;
+}
+
+.cap:first-letter {
+    text-transform: uppercase;
+}
+
+.alt {
+	background-color:#ccc;
+}
