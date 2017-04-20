@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity repository-class="AdminBundle\Repository\OrganizerRepository" name="AdminBundle\Entity\Organizer" table="ORGANIZER">
+    <id name="id" type="integer" column="ID">
+      <generator strategy="AUTO"/>
+    </id>
+    <field name="name" type="string" column="NAME" length="45"/>
+    <field name="isActive" type="boolean" column="IS_ACTIVE" />
+    <one-to-many field="contacts" target-entity="AdminBundle\Entity\Contact" mapped-by="organizer" orphan-removal="true">
+       <cascade>
+            <cascade-persist />
+            <cascade-remove />
+        </cascade>
+    </one-to-many>
+  </entity>
+</doctrine-mapping>

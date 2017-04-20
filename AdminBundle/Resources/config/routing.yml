@@ -1,0 +1,33 @@
+#####  Routing
+
+organizer_list:
+    pattern: /listOrganizers
+    defaults:
+        _controller: AdminBundle:Organizer:listOrganizers
+        p: 10
+
+organizer_update:
+    pattern: /updateOrganizer
+    defaults:
+        _controller: AdminBundle:Organizer:updateOrganizer
+        p: 10
+
+organizer_delete:
+    pattern: /deleteOrganizer/{organizerId}}
+    defaults:
+        _controller: AdminBundle:Organizer:deleteOrganizer
+        p: 10
+
+organizer_generateReport:
+    pattern: /generateReport
+    defaults:
+        _controller: AdminBundle:Organizer:generateReport
+        p: 10
+		
+organizer_sendReport:
+    pattern: /sendReport
+    defaults:
+        _controller: AdminBundle:Organizer:sendReport
+        p: 10
+
+

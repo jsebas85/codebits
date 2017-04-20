@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        
+
+        <service id="organizer_repository" class="%doctrine.orm.entity_manager.class%"
+             factory-service="doctrine.orm.entity_manager"
+             factory-method="getRepository">
+            <argument>AdminBundle\Entity\Organizer</argument>
+        </service>
+
+        <service id="contact_repository" class="%doctrine.orm.entity_manager.class%"
+             factory-service="doctrine.orm.entity_manager"
+             factory-method="getRepository">
+            <argument>AdminBundle\Entity\Contact</argument>
+        </service>
+		
+		<service id="organizer_service" class="AdminBundle\Service\OrganizerService">
+            <call method="setOrganizerRepository">
+                <argument type="service" id="organizer_repository" />
+            </call>
+            <call method="setContactRepository">
+                <argument type="service" id="contact_repository" />
+            </call>
+            <call method="setHtmlToPdfService">
+                 <argument type="service" id="knp_snappy.pdf" />
+            </call>
+            <call method="setTemplatingService">
+                 <argument type="service" id="twig" />
+            </call>
+            
+        </service>
+    </services>
+
+</container>
