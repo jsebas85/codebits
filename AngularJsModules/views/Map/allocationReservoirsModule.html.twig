@@ -1,0 +1,107 @@
+{% block content %}
+<div id="allocationReservoirsModule" ng-controller="selectReservoirsController as resController">
+    <div class="panel panel-default" id="selection">
+        <div class="panel-heading">
+            <button class="headingSearch" ng-click="resController.showSearchSelection = !resController.showSearchSelection" ng-show="!resController.showSearchSelection">
+                <i class="fa fa-search fa-1x"></i>
+            </button>
+            <span class="heading">{{ 'selection.title' | trans({}, 'map') }}</span>
+            <span class="headingArrow" ng-click="resController.toggleSelection()">
+                <i ng-show="!resController.showSelection" class="fa fa-angle-down fa-1x"></i>
+                <i ng-show="resController.showSelection" class="fa fa-angle-up fa-1x"></i>
+            </span>
+        </div>
+        <div class="panel-body fixed-panel">
+            <button class="closeSearch" ng-click="resController.showSearchSelection = !resController.showSearchSelection; selectRes = ''; " ng-show="resController.showSearchSelection">
+                <i class="fa fa-times fa-1x"></i>
+            </button>
+            <input class="searchBox" type="text" ng-model="selectRes.reservoirName" ng-show="resController.showSearchSelection" ng-minlength="2" ng-model-options="{debounce: 1000}" />
+            <table id = "reservoirList" ng-table="selectionTable" class="table table-condensed">
+                <thead/>
+                <tbody class="reservoirTotal">
+                    <tr class="reservoirRow">
+                        <td class="reservoirLabel" style="background-color:{[{resController.reservoirList.total.color}]} ">{[{resController.reservoirList.total.reservoirName}]} </td>
+                        <td>
+                            <input class="reservoirSelected " value="{[{resController.reservoirList.total.nbSelect}]}" readonly>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody class="reservoirList" ng-show="resController.showSelection">
+                    <tr class="reservoirRow" ng-repeat="data in $data | array | orderBy:'position' | filter:selectRes">
+                        <td class="reservoirLabel" ng-click="resController.editReservoir(data.id)" style="cursor:pointer;">
+                            <div uib-popover="{[{data.saleChannelName}]} - {[{data.endDate}]}" popover-trigger="mouseenter" popover-popup-delay="500" tooltip-placement="bottom" uib-tooltip="{{ 'map.addReservoirName' | trans({}, 'map') }}">
+                                <div class="reservoirColor" style="background-color: {[{data.color}]};"> </div>
+                                <div class="reservoirInfo" >{[{data.reservoirName | limitTo:20}]}{[{data.reservoirName.length > 20 ? '...' : ''}]}</div>
+                                 <i class="fa fa-clock-o fa-1x"></i>
+                                 <div style="clear:both;"></div>
+                            </div>
+                        <td>
+                            <input class="reservoirSelected" value="{[{data.nbSelect}]}" readonly>
+                        </td>
+                    </tr>
+                    <tr class="reservoirRow" ng-show="resController.showSelection">
+                        <td class="reservoirLabel" style="background-color:{[{resController.reservoirList.neutral.color}]} ">{{ 'selection.total' | trans({}, 'map') }} </td>
+                        <td>
+                            <input class="reservoirSelected" value="{[{resController.subtotal}]}" readonly>
+                        </td>
+                    </tr>
+                    <tr/>
+                    <tr class="reservoirRow" ng-show="resController.showSelection">
+                        <td class="reservoirLabel" style="background-color:{[{resController.reservoirList.neutral.color}]} ">{[{resController.reservoirList.neutral.reservoirName}]} </td>
+                        <td>
+                            <input class="reservoirSelected" value="{[{resController.reservoirList.neutral.nbSelect}]}" readonly>
+                        </td>
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="panel panel-default" id="allocation">
+        <div class="panel-heading">
+            <button class="headingSearch" ng-click="resController.showSearchAllocation = !resController.showSearchAllocation" ng-show="!resController.showSearchAllocation">
+                <i class="fa fa-search fa-1x"></i>
+            </button>
+            <span class="heading"> {{ 'allocation.title' | trans({}, 'map') }} </span>
+             <span class="headingArrow" ng-click="resController.toggleAllocation()">
+                <i ng-show="!resController.showAllocation" class="fa fa-angle-down fa-1x"></i>
+                <i ng-show="resController.showAllocation" class="fa fa-angle-up fa-1x"></i>
+            </span>
+        </div>
+        <div class="panel-body fixed-panel">
+            <button class="closeSearch" ng-click="resController.showSearchAllocation = !resController.showSearchAllocation; allocateRes = '';" ng-show="resController.showSearchAllocation">
+                <i class="fa fa-times fa-1x"></i>
+            </button>
+            <input class="searchBox" type="text" ng-model="allocateRes.reservoirName" ng-show="resController.showSearchAllocation" ng-minlength="2" ng-model-options="{debounce: 1000}"/>
+            <table id="allocationReservoirList" ng-table="allocationTable" class="table table-condensed" ng-show="resController.showAllocation || allocateRes.reservoirName.length > 0">
+                <thead/>
+                <tbody>
+                    <tr class="allocateRow" ng-repeat="data in $data | array | orderBy:'position' | filter:allocateRes">
+                        <td class="allocate">
+                            <button class="allocate" ng-click="resController.allocate(data.id)" ng-disabled="! resController.selectedSeats.length" tooltip-placement="bottom" uib-tooltip="{{ 'map.addReservoirName' | trans({}, 'map') }}" >
+                                <div style="background-color: {[{data.color}]} "></div>
+                                {[{data.reservoirName}]}
+                            </button>
+                        </td>
+                    </tr>
+                    <tr class="allocateRow">
+                        <td class="allocate">
+                            <button class="allocate allocateNeutral" style="background-color:{[{resController.reservoirList.neutral.color}]} " ng-click="resController.allocate(0)" ng-disabled="! resController.selectedSeats.length" >
+                                 {[{resController.reservoirList.neutral.reservoirName}]}
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
+
+
+{% block javascripts %}
+{% endblock javascripts %}

@@ -1,0 +1,84 @@
+    <div ng-controller="filterModuleController as filterController">
+
+        <div id="filterModule" class="mapComponent" ng-filter-reposition ng-show="filterController.show.filter">
+
+            
+
+            <div style="padding: 10px;">
+                <!-- State -->
+                <div ng-show="filterController.showFilter.state" class="colFiltre">
+                    <div class="dropdown">
+                      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuState" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        {{ 'filter.state.title' | trans({}, 'map') }}
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuState">
+                        <li ng-repeat="state in filterController.filterList.stateList" ng-class="filterController.disabledSelected.state[state.id];">
+                            <a ng-click="filterController.filterSelectionClick($event, 'state', state)">{[{filterController.filterList.stateList[state.id].name}]}</a>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div class="filter-selected">
+                        <div ng-show="filterController.showLabelAll.state">
+                            {{ 'filter.tous' | trans({}, 'map') }}
+                        </div>
+                        <ul class="liste-filter btn-check-selected">
+                            <li ng-repeat="stateSelected in filterController.selectedList.state">
+                                <i ng-click="filterController.filterSelectionDeletedClick('state', stateSelected)" ng-show="filterController.fixedFilters['state'] == false" class="fa fa-times fa-1"></i> {[{filterController.filterList.stateList[stateSelected.id].name}]}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                 <!-- Reservoirs -->
+                <div ng-show="filterController.showFilter.reservoir" class="colFiltre">
+                    <div class="dropdown">
+                      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuReservoir" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        {{ 'filter.reservoir.title' | trans({}, 'map') }}
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuReservoir">
+                        <li ng-repeat="reservoir in filterController.filterList.reservoirList" ng-class="filterController.disabledSelected.reservoir[reservoir.id];">
+                            <a ng-click="filterController.filterSelectionClick($event, 'reservoir', reservoir)"><i class="fa fa-circle fa-2"  style="color:{[{filterController.filterList.reservoirList[reservoir.id].color}]}"></i>  {[{filterController.filterList.reservoirList[reservoir.id].reservoirName}]}</a>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div class="filter-selected">
+                        <div ng-show="filterController.showLabelAll.reservoir">
+                            {{ 'filter.tous' | trans({}, 'map') }}
+                        </div>
+                        <ul class="liste-filter btn-check-selected">
+                            <li ng-repeat="reservoirSelected in filterController.selectedList.reservoir">
+                                <i ng-click="filterController.filterSelectionDeletedClick('reservoir', reservoirSelected)" class="fa fa-times fa-1"></i><i class="fa fa-circle fa-2"  style="color:{[{filterController.filterList.reservoirList[reservoirSelected.id].color}]}"></i> {[{filterController.filterList.reservoirList[reservoirSelected.id].reservoirName}]}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="controlContainer">
+                    <!-- Button delete filtres-->
+                    <div ng-show="filterController.showFilter.deleted" class="colFiltre">
+                        <i class="fa fa-times fa-2x" ng-click="filterController.filterDeletedClick()"></i>
+                    </div>
+
+                    <!-- Filters activation-->
+                    <div ng-click="filterController.initSeatStates()" ng-show="filterController.showFilter.check" class="colFiltre">
+                        <i class="fa fa-refresh fa-2x"></i>
+                    </div>
+                </div>
+
+                <!-- Close filter module-->
+                <div class="colFiltre openClose" ng-click="filterController.filterFoldClick()">
+                    <i class="fa fa-filter fa-2x"></i><i class="fa fa-angle-right fa-2x"></i><br>
+                    <span>Filtres</span>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    {% block javascripts %}
+    {% endblock javascripts %}

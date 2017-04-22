@@ -1,0 +1,197 @@
+
+{% block content %}
+    <div ng-app="myApp" ng-controller="MainCtrl as mainController" style="height:100%; position: relative;">
+
+        <div id="map" class="row">
+            {% include 'Map:filterModule.html.twig' %}
+        </div>
+
+        <div class="toggleTabButton">
+            <button aria-label="Justify" class="btn btn-default" type="button" ng-click="mainController.showAllocationModule()">
+                <i class="fa fa-align-justify"></i>
+            </button>
+        </div>
+
+        <div id="reservoirAllocationTab" class="row mapComponent" ng-reposition>
+            <div class="closingButton">
+                <span type="button" class="btn" ng-click="mainController.showAllocationModule()">
+                    <i class="fa fa-times"></i>
+                </span>
+            </div>
+            <div class="row module-container">
+                {% include 'Map:allocationReservoirsModule.html.twig' %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <!-- Angular -->
+    <script src="{{ asset('bundles/js/angular-1.5.0/angular.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/js/angular-1.5.0/angular-cookies.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/js/angular-1.5.0/i18n/angular-locale_fr-fr.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/js/angular-ui/ui-bootstrap-tpls-1.1.2.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/search/libs/ng-table-master/ng-table-master/ng-table.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/js/pixi.js/pixi.min.js') }}" type="text/javascript"></script>
+
+    <!-- Services et structures de données-->
+    <script src="{{ asset('bundles/map/js/structures.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/map/js/services.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/map/js/graphicTool.js') }}" type="text/javascript"></script>
+
+    <!-- Composants -->
+    <script src="{{ asset('bundles/map/js/components/filterComponent.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('bundles/map/js/components/selectReservoirsComponent.js') }}" type="text/javascript"></script>
+    
+    <script type="text/javascript">
+
+        angular.module('filter').constant("representationId", {{ mainData.representationId | raw }});
+        angular.module('filter').constant("filterConfig", {{ filterConfig | raw }});
+        angular.module('selectReservoirs').constant("RESERVOIRS", {{ reservoirList | raw }} );
+
+        //Module Angular
+        var myApp = angular.module('myApp', ['generalServices', 'filter', 'selectReservoirs']);
+        myApp.config(function($interpolateProvider){
+            $interpolateProvider.startSymbol('{[{').endSymbol('}]}')
+        });
+
+        myApp.directive('ngReposition', function() {
+            return function(scope, element, attrs) {
+                element.bind("mousedown",function(event) {
+
+                    $(document).bind("mouseup", function(event) {
+                        $(document).unbind(event);
+
+                        var left = parseInt(element.css("left"));
+                        var top = parseInt(element.css("top"));
+                        var elementName = element.attr("id");
+
+                        scope.$eval('mainController.setPositionPreferences("' + elementName + '", ' + left + ',' + top + ')');
+                    });
+
+                });
+            }
+        });
+
+        //Controller Angular
+        myApp.controller('MainCtrl', ['$scope', 'preferences', 'dataAccess', function ($scope, preferences, dataAccess) {
+
+            var self = this;
+            self.toggle = getPreference('map.reservoirAllocationTab.visible', 'boolean');
+            $scope.componentList = {};
+            initComponents();
+
+            function initComponents()
+            {
+                var elementName = 'reservoirAllocationTab';
+                var element = $('#' + elementName);
+                element.draggable(
+                    { containment: ".container-fluid",
+                        start: function() {$(this).css('z-index', 1000)},
+                        drag: function() {
+                            $(this).css('width', '');
+                            $(this).css('height', '');
+                        },
+                        stop: function() {
+                            var zoverlay = $('#overlay').css('z-index')
+                            if( typeof  zoverlay != 'undefined') {
+                                $(this).css('z-index', parseInt(zoverlay) + 1);
+                            } else {
+                                $(this).css('z-index', 1)
+                            }
+
+                        },
+                        cursor: "move",
+                        opacity: 0.6,
+                        snap: ".mapComponent",
+                        cancel: "#selection, #allocation, #verification, #validation, #creationReservoirModule"
+                });
+            }
+
+            self.showAllocationModule = function()
+            {
+                self.toggle = !self.toggle
+                if (self.toggle == true) {
+                    $("#reservoirAllocationTab").show();
+                } else {
+                    $("#reservoirAllocationTab").hide();
+                }
+                setPreference('map.reservoirAllocationTab.visible', self.toggle);
+            }
+
+            //********************************
+            //Fonctions de préférences       *
+            //********************************
+            function setPreference(key, value)
+            {
+                preferences.set(key, value);
+            }
+
+            self.setPositionPreferences = function(name, left, top)
+            {
+                preferences.set('map.' + name + '.left', left);
+                preferences.set('map.' + name + '.top', top);
+            }
+
+            function getPreference(key, dataType)
+            {
+                var preference = preferences.get(key);
+                switch (dataType) {
+
+                    case 'boolean':
+                        preference = !(preference === 'false');
+                    break;
+                    case 'float':
+                        preference = parseFloat(preference);
+                    break;
+
+                    default:
+                    break;
+                }
+
+                return preference;
+            }
+
+            //Module Filter
+            $scope.$on('filter.all.update', function (event, etatSiegeList) {
+                $scope.$broadcast('filter.all.update.broadcast', etatSiegeList);
+            });
+
+            $scope.$on('filter.saveseatlist', function (event, type, modifiedSeatList) {
+                $scope.$broadcast('filter.saveseatlist.broadcast', type, modifiedSeatList);
+            });
+
+            $scope.$on('filter.all.updateagregate', function (event, seatAgregate) {
+                $scope.$broadcast('filter.all.updateagregate.broadcast', seatAgregate);
+            });
+
+            $scope.$on('filter.initdata', function (event, etatSiegeList) {
+                $scope.$broadcast('filter.initdata.broadcast');
+            });
+
+            //All
+            $scope.$on('all.filter.updateseatlist', function (event, seatIdList) {
+                $scope.$broadcast('all.filter.updateseatlist.broadcast', seatIdList);
+            });
+
+            $scope.$on('filter.all.representationchanged', function(event) {
+                $scope.$broadcast('filter.all.representationchanged.broadcast');
+            });
+			
+            $scope.$on('all.filter.updateseatsstate', function(event, repId) {
+                $scope.$broadcast('all.filter.updateseatsstate.broadcast', repId);
+            });
+
+        }]);
+
+    </script>
+
+{% endblock javascripts %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('bundles/search/libs/ng-table-master/ng-table-master/ng-table.min.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ asset('bundles/css/map/map.css') }}" type="text/css" />
+{% endblock %}
