@@ -3,10 +3,9 @@
 <head>
   <meta charset="utf-8">
   <title>Google Phone Gallery</title>
-  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css">
-  <link rel="stylesheet" href="css/app.css">
-  <script src="../bower_components/angular/angular.js"></script>
-  <script src="js/controllers.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular.min.js"></script>
+  <script src="controllers.js"></script>
 </head>
 <body ng-controller="PhoneListCtrl">
 
@@ -26,12 +25,13 @@
       <div class="span10">
         <!--Body content-->
 
-        <ul class="phones">
-          <li ng-repeat="phone in phones | filter:query | orderBy:orderProp">
-            <span>{{phone.title}}</span>
-            <img ng-src=="{{phone.media.m}}">
-          </li>
-        </ul>
+        <table class="phones">
+		
+          <tr ng-repeat="phone in phones | filter:query | orderBy:orderProp">
+            <td style="width: 450px;"><span>{{phone.title}}</span></td>
+            <td><img ng-src="{{phone.media.m}}"></td>
+          </tr>
+        </table>
 
       </div>
     </div>

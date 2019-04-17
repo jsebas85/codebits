@@ -1,11 +1,9 @@
-'use strict';
-
 /* Controllers */
 
 var phonecatApp = angular.module('phonecatApp', []);
 phonecatApp.controller('PhoneListCtrl', function($scope, $http) {
-  $http.get('phones/flickr.json').success(function(data) {
-    $scope.phones = data;
+  $http.jsonp('https://www.flickr.com/services/feeds/photos_public.gne?tags=cellphone,brand&tag_mode=all&format=json&jsoncallback=JSON_CALLBACK').success(function(data) {
+	$scope.phones = data.items;
   }).
     error(function(data, status, header, config) {
       $scope.phones = data || "Request failed";
